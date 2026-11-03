@@ -29,3 +29,18 @@
 - (one thing, for example why validation accuracy moved up and down between epochs)
 
 **Tools:** Kaggle free GPU, torchvision, GitHub
+
+## Day 3: Hugging Face basics
+**What I built:**
+- Sentiment pipeline, then rebuilt it by hand: tokenizer → IDs → model → logits → softmax → label
+- English-to-Tamil translation with NLLB-200 (distilled 600M), using the model directly because the old `translation` pipeline was removed in transformers v5
+- Scored the output with chrF and BLEU against my own Tamil references (chrF 49.3, BLEU 15.6 on 3 sentences)
+
+**What I learned:**
+- (one sentence on tokenizers and what the model actually sees)
+- (one sentence on why a translation score can be low for a correct translation)
+
+**What confused me:**
+- (one thing, for example why the sanity check scores a reference against itself)
+
+**Tools:** Kaggle free GPU, Hugging Face transformers, sacrebleu, GitHub
