@@ -40,6 +40,23 @@
 - (one sentence on tokenizers and what the model actually sees)
 - (one sentence on why a translation score can be low for a correct translation)
 
+## Day 4: Speech-to-text with Whisper
+**What I built:**
+- Loaded a 13 s audio clip and found its sample rate was 22,050 Hz, so I resampled to the 16,000 Hz Whisper expects
+- Transcribed it with whisper-small by hand (processor → log-mel input [1, 80, 3000] → generate → decode)
+- Got segment timestamps and wrote a real .srt file with a function that formats times and wraps lines at 42 characters
+
+**What I learned:**
+- (one sentence on why audio must be resampled to 16 kHz)
+- (one sentence on what Whisper's input looks like)
+
+**What confused me:**
+- (one thing, for example why the whole clip came back as a single 13 s cue)
+
+**Next problem to solve:**
+- Long cues break subtitle rules (max 2 lines, short duration), so the pipeline needs a segment-splitting step
+
+**Tools:** Kaggle free GPU, Hugging Face transformers, soundfile, scipy, GitHub
 **What confused me:**
 - (one thing, for example why the sanity check scores a reference against itself)
 
