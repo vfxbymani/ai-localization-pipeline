@@ -17,6 +17,15 @@ python video_to_srt.py my_video.mp4 --model openai/whisper-medium --language ta
 |---|---|
 | Pipeline (30 s fixed chunks) | 0.066 |
 | Each clip transcribed on its own | 0.063 |
+### Tamil test (21.6 s sung clip, same pipeline, `--language ta`)
+| Model | CER vs correct reference | WER |
+|---|---|---|
+| whisper-small | 0.216 | 0.929 |
+| whisper-medium | 0.135 | 1.000 |
+
+- CER computed with spaces removed; WER is unreliable for Tamil because words are long and are split differently by the model.
+- Scoring against a reference of the wrong length gives CER above 1.0, so reference and audio must cover the same material.
+- One short sung clip: a demo, not a benchmark.
 
 - 303 reference words; the 0.003 gap is about one word, so fixed chunking cost almost nothing here.
 - 36 cues, 0 overlaps, longest line 42 characters, 2 cues ending on a function word.
@@ -35,3 +44,5 @@ python video_to_srt.py my_video.mp4 --model openai/whisper-medium --language ta
 
 ## Next
 Translation to subtitle files in other languages, LLM-based line breaking and QA, Docker + a small API.
+
+
