@@ -61,3 +61,25 @@
 - (one thing, for example why the sanity check scores a reference against itself)
 
 **Tools:** Kaggle free GPU, Hugging Face transformers, sacrebleu, GitHub
+
+## Day 5: Measuring speech accuracy (WER and CER)
+**What I built:**
+- Transcribed 8 English clips with whisper-small and scored them with WER: 0.10 raw, 0.07 after normalizing "mister" vs "mr" (186 correct, 12 substitutions, 2 deletions, 0 insertions)
+- Transcribed a 21.6 s Tamil clip (sung) with `language="ta"`
+- Compared whisper-small and whisper-medium on it: CER 0.286 → 0.19 (0.216 → 0.108 ignoring spaces), WER 1.0 for both
+
+**What I learned:**
+- (one sentence on why text normalization changes WER)
+- (one sentence on why CER is fairer than WER for Tamil)
+
+**What confused me:**
+- (one thing, for example why WER stayed at 1.0 although the output got closer)
+
+**Caveats:**
+- Tamil test was one short sung clip, so it is a demo, not a benchmark
+
+**Tools:** Kaggle free GPU, whisper-small/medium, jiwer, librosa, GitHub
+**Post-processing step:**
+- Snapped Whisper-medium output to known reference text using fuzzy matching (rapidfuzz ratio 89.2, threshold 75), with a flag-for-human-review fallback below the threshold
+- Wrote tamil_clip.srt (one cue, 0 to 21.6 s)
+- Note: the final text matches because the reference was supplied, not because Whisper got it right (Whisper-medium CER was 0.19)
