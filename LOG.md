@@ -89,3 +89,26 @@
 
 **Still wrong:**
 - Name written two ways, a missing word ("similes"), text drifting from audio because Tamil word order differs. Next: glossary + LLM post-edit, and word-level timestamps.
+
+## Day 9: Glossary and LLM post-edit
+**What I built:**
+- Gemini API set up with the key in Kaggle Secrets (never in the notebook)
+- A glossary (names and terms with fixed Tamil forms) and an editing prompt
+- Post-edited 14 whole sentences with gemini-3.5-flash-lite and gemini-3.5-flash; both followed the glossary 13/13
+- A review report that flags sentences for a human: 3 of 14 flagged
+
+**Measured (Day 8 NLLB-only vs Day 9 post-edit):**
+- Cues with Latin letters: 2 → 0
+- Cues over 84 characters: 2 → 0
+- Longest cue: 7.25 s → 6.66 s
+- Ending at punctuation: unchanged at 81%; shortest cue still under 1 s
+
+**What I learned:**
+- A glossary check done by exact string match fails for Tamil because suffixes change the end of a word, so I matched the stem
+- A model flagged for "big change" can be an improvement; a flag means "look here", not "wrong"
+- The "wall" error came from Whisper's chunk cut on Day 6; the LLM translated it faithfully, so source errors must be fixed at the source
+
+
+
+**Still wrong:**
+- Sentence 4 (source error), cue timing drift because Tamil word order differs, two spellings of "Ithaca" not yet in the glossary
