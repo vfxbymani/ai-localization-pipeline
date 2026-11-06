@@ -46,12 +46,7 @@
 - Transcribed it with whisper-small by hand (processor → log-mel input [1, 80, 3000] → generate → decode)
 - Got segment timestamps and wrote a real .srt file with a function that formats times and wraps lines at 42 characters
 
-**What I learned:**
-- (one sentence on why audio must be resampled to 16 kHz)
-- (one sentence on what Whisper's input looks like)
 
-**What confused me:**
-- (one thing, for example why the whole clip came back as a single 13 s cue)
 
 **Next problem to solve:**
 - Long cues break subtitle rules (max 2 lines, short duration), so the pipeline needs a segment-splitting step
@@ -68,9 +63,7 @@
 - Transcribed a 21.6 s Tamil clip (sung) with `language="ta"`
 - Compared whisper-small and whisper-medium on it: CER 0.286 → 0.19 (0.216 → 0.108 ignoring spaces), WER 1.0 for both
 
-**What I learned:**
-- (one sentence on why text normalization changes WER)
-- (one sentence on why CER is fairer than WER for Tamil)
+
 
 **What confused me:**
 - (one thing, for example why WER stayed at 1.0 although the output got closer)
@@ -83,3 +76,16 @@
 - Snapped Whisper-medium output to known reference text using fuzzy matching (rapidfuzz ratio 89.2, threshold 75), with a flag-for-human-review fallback below the threshold
 - Wrote tamil_clip.srt (one cue, 0 to 21.6 s)
 - Note: the final text matches because the reference was supplied, not because Whisper got it right (Whisper-medium CER was 0.19)
+
+- ## Day 8: Translating subtitles and keeping timings
+**What I built:**
+- A parser that reads an .srt back into cues, and a translator that swaps only the text so timings stay identical
+- English → Tamil with NLLB-200 (600M): 36 cues, Tamil 1.13× longer than English
+- Two fixes for cut sentences: group cues into 14 whole sentences before translating (step 3), then cut at clause boundaries (step 4)
+
+**Measured:**
+- Step 3: 36 cues, 23/36 end at punctuation, longest 6.68 s, shortest 0.84 s
+- Step 4: 32 cues, 26/32 end at punctuation, longest 7.25 s, shortest 0.69 s (both guideline breaks reported)
+
+**Still wrong:**
+- Name written two ways, a missing word ("similes"), text drifting from audio because Tamil word order differs. Next: glossary + LLM post-edit, and word-level timestamps.
